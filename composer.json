@@ -1,0 +1,21 @@
+{
+    "name": "eluhr/yii2-jedi-editor",
+    "description": "Yii2 asset bundle and input widget for germanbisurgi/jedi",
+    "type": "yii2-extension",
+    "keywords": ["yii2","json schema","json","jedi"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Elias Luhr",
+            "email": "e.luhr@herzogkommunikation.de"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "~2.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "eluhr\\jedi\\": "src"
+        }
+    }
+}
