@@ -25,4 +25,27 @@ to the require section of your `composer.json` file.
 Usage
 -----
 
-TBD
+### Usuage
+
+without a model
+
+```php
+use eluhr\jedi\widgets\JediEditor;
+
+<?php echo JediEditor::widget([
+    'name' => 'editor'
+]); ?>
+```
+
+with a model
+
+```php
+use eluhr\jedi\widgets\JediEditor;
+
+<?php echo JediEditor::widget([
+    'model' => $model,
+    'attribute' => 'attribute_name'
+]); ?>
+```
+
+For further informations about the usage of the jedi editor please refer to the [docs](https://github.com/germanbisurgi/jedi)
