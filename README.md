@@ -10,7 +10,7 @@ The preferred way to install this extension is through [composer](https://getcom
 Either run
 
 ```
-composer eluhr/yii2-jedi-editor
+composer require eluhr/yii2-jedi-editor
 ```
 
 or add
