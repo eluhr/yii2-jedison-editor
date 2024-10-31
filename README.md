@@ -25,8 +25,6 @@ to the require section of your `composer.json` file.
 Usage
 -----
 
-### Usuage
-
 ```php
 <?php
 /**
