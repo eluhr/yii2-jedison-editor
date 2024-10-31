@@ -159,6 +159,11 @@ JS
             $this->pluginOptions['theme'] = new JsExpression('new Jedi.Theme()');
         }
 
+        // Set default ref parser if not set
+        if (!isset($this->pluginOptions['refParser'])) {
+            $this->pluginOptions['refParser'] = new JsExpression('new Jedi.RefParser()');
+        }
+
         // Set default value
         if ($this->hasModel()) {
             $data = $this->model->{$this->attribute};
