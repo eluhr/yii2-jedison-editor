@@ -3,6 +3,7 @@
 namespace eluhr\jedi\widgets;
 
 use eluhr\jedi\assets\JediAsset;
+use Yii;
 use yii\base\InvalidConfigException;
 use yii\helpers\Html;
 use yii\helpers\Inflector;
@@ -164,7 +165,13 @@ JS
         } else {
             $data = $this->value;
         }
-        
-        $this->pluginOptions['data'] = new JsExpression($data);
+
+        // Check if value is valid json. json_decode throws an error which we can "catch" with the json_last_error function
+        json_decode($data);
+        if (json_last_error() === JSON_ERROR_NONE) {
+            $this->pluginOptions['data'] = new JsExpression($data);
+        } else {
+            Yii::warning('Data is not a valid JSON.');
+        }
     }
 }
