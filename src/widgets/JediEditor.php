@@ -3,7 +3,10 @@
 namespace eluhr\jedi\widgets;
 
 use eluhr\jedi\assets\JediAsset;
+use yii\base\InvalidConfigException;
 use yii\helpers\Html;
+use yii\helpers\Inflector;
+use yii\helpers\Json;
 use yii\widgets\InputWidget;
 
 class JediEditor extends InputWidget
@@ -14,12 +17,18 @@ class JediEditor extends InputWidget
      */
     public array $containerOptions = [];
 
+    public array $schema;
+
     /**
      * @inheritdoc
      */
     public function init()
     {
         parent::init();
+
+        if (!isset($this->schema)) {
+            throw new InvalidConfigException("Property 'schema' must be specified.");
+        }
 
         // Always set a unique id for the container
         if (!isset($this->containerOptions['id'])) {
@@ -60,5 +69,30 @@ class JediEditor extends InputWidget
     protected function registerAssets(): void
     {
         JediAsset::register($this->view);
+
+        $containerId = $this->containerOptions['id'];
+        $inputId = $this->hasModel() ? Html::getInputId($this->model, $this->attribute) : $this->options['id'];
+        $inputName = $this->hasModel() ? Html::getInputName($this->model, $this->attribute) : $this->name;
+        $id = Inflector::slug($inputId, '');
+
+        $schema = Json::htmlEncode($this->schema);
+
+        $this->view->registerJs(<<<JS
+const initEditor$id = () => {
+    const editorOptions = {
+        container: document.getElementById('$containerId'),
+        theme: new Jedi.ThemeBootstrap3(),
+        schema: $schema,
+        hiddenInputAttributes: {
+            'name': '$inputName',
+            'id': '$inputId'
+        }
+    }
+    const editor = new Jedi.Create(editorOptions) 
+}
+
+initEditor$id()
+JS
+        );
     }
 }
