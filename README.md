@@ -45,7 +45,8 @@ echo JediEditor::widget([
     'name' => 'editor',
     'schema' => $schema1,
     'pluginOptions' => [
-        'refParser' => null, // No ref parser
+        // No ref parser
+        'refParser' => null
     ]
 ]);
 
@@ -55,7 +56,8 @@ echo JediEditor::widget([
     'attribute' => 'attribute_name',
     'schema' => $schema2,
     'pluginOptions' => [
-        'theme' => new JsExpression('new Jedi.ThemeBootstrap3()') // See: https://github.com/germanbisurgi/jedi/tree/main?tab=readme-ov-file#theme
+        // Update theme, see: https://github.com/germanbisurgi/jedi/tree/main?tab=readme-ov-file#theme
+        'theme' => new JsExpression('new Jedi.ThemeBootstrap3()') 
     ]
 ]);
 ```
