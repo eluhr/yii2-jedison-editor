@@ -33,7 +33,8 @@ without a model
 use eluhr\jedi\widgets\JediEditor;
 
 <?php echo JediEditor::widget([
-    'name' => 'editor'
+    'name' => 'editor',
+    'schema' => '{}' // Your JSON Schema
 ]); ?>
 ```
 
@@ -44,7 +45,8 @@ use eluhr\jedi\widgets\JediEditor;
 
 <?php echo JediEditor::widget([
     'model' => $model,
-    'attribute' => 'attribute_name'
+    'attribute' => 'attribute_name',
+    'schema' => '{}' // Your JSON Schema
 ]); ?>
 ```
 
