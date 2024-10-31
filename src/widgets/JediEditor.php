@@ -3,6 +3,7 @@
 namespace eluhr\jedi\widgets;
 
 use eluhr\jedi\assets\JediAsset;
+use stdClass;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\helpers\Html;
@@ -11,6 +12,9 @@ use yii\helpers\Json;
 use yii\web\JsExpression;
 use yii\widgets\InputWidget;
 
+/**
+ * @property-write stdClass|string|array $schema
+ */
 class JediEditor extends InputWidget
 {
     /**
@@ -20,7 +24,8 @@ class JediEditor extends InputWidget
     public array $containerOptions = [];
 
     /**
-     * An json that contains the schema to build the form. Values can be given as array, string or stdClass
+     * A json that contains the schema to build the form. Values can be given as array, string or stdClass
+     * Does not to be set if pluginOptions property has schema set.
      */
     protected array $_schema;
 
@@ -40,7 +45,6 @@ class JediEditor extends InputWidget
         parent::init();
 
         // If schema is set in plugin options use it from there
-        // TODO: Do we want that?
         if (isset($this->pluginOptions['schema'])) {
             $this->setSchema($this->pluginOptions['schema']);
             unset($this->pluginOptions['schema']);
@@ -102,13 +106,22 @@ class JediEditor extends InputWidget
         $schema = Json::htmlEncode($this->_schema);
         $pluginOptions = Json::htmlEncode($this->pluginOptions);
 
+        $refParser = $this->pluginOptions['refParser'] ?? null;
+
         // Init editor
         $this->view->registerJs(<<<JS
-const initEditor$id = () => {
+const initEditor$id = async () => {
+    const schema = $schema
+    const refParser = $refParser
+    
+    if (refParser) {
+        console.log(refParser)
+        await refParser.dereference(schema)
+    }
+    
     const defaultOptions = {
         container: document.getElementById('$containerId'),
-        // theme: new Jedi.ThemeBootstrap3(),
-        schema: $schema,
+        schema: schema,
         hiddenInputAttributes: {
             'name': '$inputName',
             'id': '$inputId'
@@ -117,9 +130,22 @@ const initEditor$id = () => {
     
     const customOptions = $pluginOptions
     
-    const editorOptions = {...defaultOptions, ...customOptions}
+    const editorOptions = deepMerge(defaultOptions, customOptions)
     
     const editor = new Jedi.Create(editorOptions) 
+    
+    // Deep merge object to merge instead of overwrite
+    function deepMerge(obj1, obj2) {
+    const result = { ...obj1 }; // Start with a shallow copy of obj1
+    for (const key in obj2) {
+        if (obj2[key] instanceof Object && key in result) {
+            result[key] = deepMerge(result[key], obj2[key]); // Recursively merge
+        } else {
+            result[key] = obj2[key]; // Overwrite if not an object
+        }
+    }
+    return result;
+   }
 }
 
 initEditor$id()
@@ -131,9 +157,9 @@ JS
     /**
      * Convert schema to json array if given as string or stdClass
      */
-    public function setSchema(array|\stdClass|string $schema): void
+    public function setSchema(array|stdClass|string $schema): void
     {
-        if ($schema instanceof \stdClass) {
+        if ($schema instanceof stdClass) {
             $schema = Json::encode($schema);
             // Now that the value is a string, it is converted to an array in the next condition.
         }

@@ -27,27 +27,37 @@ Usage
 
 ### Usuage
 
-without a model
-
 ```php
-use eluhr\jedi\widgets\JediEditor;
+<?php
+/**
+ * @var \yii\base\Model $model
+*/
 
-<?php echo JediEditor::widget([
+use eluhr\jedi\widgets\JediEditor;
+use yii\web\JsExpression;
+
+// Schema can either be of type string, array or stdClass.
+$schema1 = '{}';
+$schema2 = [];
+ 
+// Without a model
+echo JediEditor::widget([
     'name' => 'editor',
-    'schema' => '{}' // Your JSON Schema
-]); ?>
-```
+    'schema' => $schema1,
+    'pluginOptions' => [
+        'refParser' => null, // No ref parser
+    ]
+]);
 
-with a model
-
-```php
-use eluhr\jedi\widgets\JediEditor;
-
-<?php echo JediEditor::widget([
+// With a model
+echo JediEditor::widget([
     'model' => $model,
     'attribute' => 'attribute_name',
-    'schema' => '{}' // Your JSON Schema
-]); ?>
+    'schema' => $schema2,
+    'pluginOptions' => [
+        'theme' => new JsExpression('new Jedi.ThemeBootstrap3()') // See: https://github.com/germanbisurgi/jedi/tree/main?tab=readme-ov-file#theme
+    ]
+]);
 ```
 
 For further informations about the usage of the jedi editor please refer to the [docs](https://github.com/germanbisurgi/jedi)
