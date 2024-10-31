@@ -115,7 +115,6 @@ const initEditor$id = async () => {
     const refParser = $refParser
     
     if (refParser) {
-        console.log(refParser)
         await refParser.dereference(schema)
     }
     
@@ -135,7 +134,7 @@ const initEditor$id = async () => {
     const editor = new Jedi.Create(editorOptions) 
     
     if (editor) {
-        window.$id = editor
+        window['$inputId'] = editor
     }
     // Deep merge object to merge instead of overwrite
     function deepMerge(obj1, obj2) {
