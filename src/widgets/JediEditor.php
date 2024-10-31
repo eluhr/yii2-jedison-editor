@@ -134,6 +134,9 @@ const initEditor$id = async () => {
     
     const editor = new Jedi.Create(editorOptions) 
     
+    if (editor) {
+        window.$id = editor
+    }
     // Deep merge object to merge instead of overwrite
     function deepMerge(obj1, obj2) {
     const result = { ...obj1 }; // Start with a shallow copy of obj1
