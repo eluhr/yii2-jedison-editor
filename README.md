@@ -29,6 +29,7 @@ Usage
 <?php
 /**
  * @var \yii\base\Model $model
+ * @var yii\web\View $this
 */
 
 use eluhr\jedi\widgets\JediEditor;
@@ -40,6 +41,7 @@ $schema2 = [];
  
 // Without a model
 echo JediEditor::widget([
+    'id' => 'my-jedi'
     'name' => 'editor',
     'schema' => $schema1,
     'pluginOptions' => [
@@ -47,6 +49,13 @@ echo JediEditor::widget([
         'refParser' => null
     ]
 ]);
+
+// Example on how to listen to change event
+$this->registerJs(<<<JS
+window['my-jedi'].on('change', () => {
+    console.log(window['my-jedi'].getValue())
+})
+JS);
 
 // With a model
 echo JediEditor::widget([
