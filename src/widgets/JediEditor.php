@@ -2,6 +2,7 @@
 
 namespace eluhr\jedi\widgets;
 
+use eluhr\jedi\assets\DeepMergeAsset;
 use eluhr\jedi\assets\JediAsset;
 use stdClass;
 use Yii;
@@ -94,6 +95,7 @@ class JediEditor extends InputWidget
      */
     protected function registerAssets(): void
     {
+        DeepMergeAsset::register($this->view);
         JediAsset::register($this->view);
 
         // Setup variables for later use
@@ -128,7 +130,6 @@ const initEditor$id = async () => {
     }
     
     const customOptions = $pluginOptions
-    
     const editorOptions = deepMerge(defaultOptions, customOptions)
     
     const editor = new Jedi.Create(editorOptions) 
@@ -136,18 +137,6 @@ const initEditor$id = async () => {
     if (editor) {
         window['$inputId'] = editor
     }
-    // Deep merge object to merge instead of overwrite
-    function deepMerge(obj1, obj2) {
-    const result = { ...obj1 }; // Start with a shallow copy of obj1
-    for (const key in obj2) {
-        if (obj2[key] instanceof Object && key in result) {
-            result[key] = deepMerge(result[key], obj2[key]); // Recursively merge
-        } else {
-            result[key] = obj2[key]; // Overwrite if not an object
-        }
-    }
-    return result;
-   }
 }
 
 initEditor$id()
