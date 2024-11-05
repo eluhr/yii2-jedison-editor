@@ -41,7 +41,7 @@ $schema2 = [];
  
 // Without a model
 echo JediEditor::widget([
-    'id' => 'my-jedi'
+    'id' => 'my-jedi',
     'name' => 'editor',
     'schema' => $schema1,
     // Update theme, see: https://github.com/germanbisurgi/jedi/tree/main?tab=readme-ov-file#theme
