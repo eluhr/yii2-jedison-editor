@@ -44,6 +44,8 @@ echo JediEditor::widget([
     'id' => 'my-jedi'
     'name' => 'editor',
     'schema' => $schema1,
+    // Update theme, see: https://github.com/germanbisurgi/jedi/tree/main?tab=readme-ov-file#theme
+    'theme' => JediEditor::THEME_THEME_BOOTSTRAP3,
     'pluginOptions' => [
         // No ref parser
         'refParser' => null
@@ -63,8 +65,8 @@ echo JediEditor::widget([
     'attribute' => 'attribute_name',
     'schema' => $schema2,
     'pluginOptions' => [
-        // Update theme, see: https://github.com/germanbisurgi/jedi/tree/main?tab=readme-ov-file#theme
-        'theme' => new JsExpression('new Jedi.ThemeBootstrap3()') 
+        // You can also set the theme like this
+        'theme' => new JsExpression('new Jedi.ThemeBootstrap3()')
     ]
 ]);
 ```
