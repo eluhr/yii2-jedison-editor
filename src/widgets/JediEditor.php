@@ -148,12 +148,15 @@ class JediEditor extends InputWidget
             $data = $this->value;
         }
 
-        // Check if value is valid json. json_decode throws an error which we can "catch" with the json_last_error function
-        json_decode($data);
-        if (json_last_error() === JSON_ERROR_NONE) {
-            $this->pluginOptions['data'] = new JsExpression($data);
-        } else {
-            Yii::warning('Data is not a valid JSON.');
+        // Check if value is set before checking json
+        if (!is_null($data)) {
+            // Check if value is valid json. json_decode throws an error which we can "catch" with the json_last_error function
+            json_decode($data);
+            if (json_last_error() === JSON_ERROR_NONE) {
+                $this->pluginOptions['data'] = new JsExpression($data);
+            } else {
+                Yii::warning('Data is not a valid JSON.');
+            }
         }
     }
 
