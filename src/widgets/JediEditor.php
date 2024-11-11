@@ -209,7 +209,10 @@ const initEditor$id = async () => {
     }
     
     const customOptions = $pluginOptions
-    const editorOptions = deepMerge(defaultOptions, customOptions)
+    let editorOptions = deepMerge(defaultOptions, customOptions)
+    if (refParser) {                            
+        editorOptions.refParser = refParser
+    }
     
     const editor = new Jedi.Create(editorOptions) 
     
