@@ -19,7 +19,7 @@ or add
 "eluhr/yii2-jedi-editor": "*"
 ```
 
-to the require section of your `composer.json` file.
+to the `require` section of your `composer.json` file.
 
 
 Usage
@@ -66,9 +66,74 @@ echo JediEditor::widget([
     'schema' => $schema2,
     'pluginOptions' => [
         // You can also set the theme like this
-        'theme' => new JsExpression('new Jedi.ThemeBootstrap3()')
+        'theme' => new JsExpression('new Jedi.ThemeBootstrap3()'),
+        'showErrors' => 'always', // "change" or "never" is also possible
     ]
 ]);
 ```
 
-For further informations about the usage of the jedi editor please refer to the [docs](https://github.com/germanbisurgi/jedi)
+Example model
+```php
+<?php
+
+namespace app\models;
+
+use eluhr\jedi\validators\JsonSchemaValidator;
+use app\filters\MyCustomFilter;
+use yii\base\Model;
+
+class MyModel extends Model
+{
+
+    public $title;
+    public $value;
+
+    public function rules()
+    {
+        $rules = parent::rules();
+        $rules[] = [
+            'title',
+            'integer',
+            'enableClientValidation' => false,
+        ];
+        $rules[] = [
+            'value',
+            JsonSchemaValidator::class,
+            'schema' => static::getJsonSchema(),
+            'filters' => static::getJsonSchemaFilters()
+        ];
+        return $rules;
+    }
+
+    public function getJsonSchemaFilters(): array
+    {
+        return [
+            'custom' => new MyCustomFilter() // Implement your custom filter if needed. See: https://opis.io/json-schema/2.x/php-filter.html Filter must inherit from Opis\JsonSchema\Filter
+        ];
+    }
+
+    public static function getJsonSchema(): string
+    {
+        return <<<JSON
+{
+  "title": "Test",
+  "type": "object",
+  "required": [
+    "name"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "\$filters": {
+        "\$func": "custom"
+      }
+    }
+  }
+}
+JSON;
+    }
+}
+?>
+```
+
+For further information about the usage of the jedi editor please refer to the [docs](https://github.com/germanbisurgi/jedi)

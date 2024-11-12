@@ -7,6 +7,7 @@ use eluhr\jedi\assets\JediAsset;
 use stdClass;
 use Yii;
 use yii\base\InvalidConfigException;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Inflector;
 use yii\helpers\Json;
@@ -48,12 +49,22 @@ class JediEditor extends InputWidget
     protected JsExpression $_theme;
 
     /**
+     * Custom validation errors either to add custom or set them if widget is initialized without a model
+     *
+     * @example [['constraint' => '$filters', 'messages' => ['Your message'], 'path' => '#/test']]
+     */
+    protected array $_validationErrors = [];
+
+    /**
      * @inheritdoc
      * @throws \yii\base\InvalidConfigException if some config is not as expected
      */
     public function init()
     {
         parent::init();
+
+        // Remove error section of the active field template because we handle errors another way
+        $this->field->error(false);
 
         // If schema is set in plugin options use it from there
         if (isset($this->pluginOptions['schema'])) {
@@ -189,11 +200,13 @@ class JediEditor extends InputWidget
 
         $refParser = $this->pluginOptions['refParser'] ?? null;
 
+        $errorMessages = Json::htmlEncode($this->getValidationErrors());
+
         // Init editor
         $this->view->registerJs(<<<JS
 const initEditor$id = async () => {
-    const schema = $schema
-    const refParser = $refParser
+    const schema = $schema || {}
+    const refParser = $refParser || null
     
     if (refParser) {
         await refParser.dereference(schema)
@@ -217,6 +230,12 @@ const initEditor$id = async () => {
     const editor = new Jedi.Create(editorOptions) 
     
     if (editor) {
+        const editorErrors = editor.getErrors()
+        const customErrors = $errorMessages
+        const errors = editorErrors.concat(customErrors)
+        if (errors.length > 0) {
+            editor.showValidationErrors(errors) 
+        }
         window['$inputId'] = editor
     }
 }
@@ -242,5 +261,27 @@ JS
             return Html::activeTextarea($this->model, $this->attribute, $this->options);
         }
         return Html::textarea($this->name, $this->value, $this->options);
+    }
+
+    /**
+     * Reformat validations errors and merge model errors if needed.
+     */
+    protected function getValidationErrors(): array
+    {
+        // Get errors from model xor validation errors set by user
+        $errors = $this->hasModel() ? ArrayHelper::merge($this->model->getErrors($this->attribute), $this->_validationErrors) : $this->_validationErrors;
+
+        $validationErrors = [];
+        foreach ($errors as $error) {
+            $validationErrors[] = is_array($error) ? $error : Json::decode($error);
+        }
+
+        // Use filter to remove potential malformed validation errors
+        return array_filter($validationErrors);
+    }
+
+    public function setValidationErrors(array $validationErrors): void
+    {
+        $this->_validationErrors = $validationErrors;
     }
 }
