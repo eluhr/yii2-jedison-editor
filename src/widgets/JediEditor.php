@@ -64,7 +64,9 @@ class JediEditor extends InputWidget
         parent::init();
 
         // Remove error section of the active field template because we handle errors another way
-        $this->field->error(false);
+        if (!empty($this->field)) {
+            $this->field->error(false);
+        }
 
         // If schema is set in plugin options use it from there
         if (isset($this->pluginOptions['schema'])) {
