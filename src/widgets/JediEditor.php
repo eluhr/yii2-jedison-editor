@@ -6,6 +6,7 @@ use eluhr\jedi\assets\DeepMergeAsset;
 use eluhr\jedi\assets\JediAsset;
 use stdClass;
 use Yii;
+use yii\base\InvalidArgumentException;
 use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -275,7 +276,13 @@ JS
 
         $validationErrors = [];
         foreach ($errors as $error) {
-            $validationErrors[] = is_array($error) ? $error : Json::decode($error);
+            try {
+                $validationErrors[] = is_array($error) ? $error : Json::decode($error);
+            } catch (InvalidArgumentException $e) {
+                // This exception occurs if error is not in valid json format
+                Yii::error($e->getMessage());
+                continue;
+            }
         }
 
         // Use filter to remove potential malformed validation errors
