@@ -249,24 +249,6 @@ JS
     }
 
     /**
-     * Render a HTML textarea tag.
-     *
-     * This will call [[Html::activeTextarea()]] if the input widget is [[hasModel()|tied to a model]],
-     * or [[Html::textarea()]] if not.
-     *
-     * @return string the HTML of the textarea field.
-     * @see Html::activeTextarea()
-     * @see Html::textarea()
-     */
-    protected function renderTextareaHtml(): string
-    {
-        if ($this->hasModel()) {
-            return Html::activeTextarea($this->model, $this->attribute, $this->options);
-        }
-        return Html::textarea($this->name, $this->value, $this->options);
-    }
-
-    /**
      * Reformat validations errors and merge model errors if needed.
      */
     protected function getValidationErrors(): array
