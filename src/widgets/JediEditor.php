@@ -195,7 +195,7 @@ class JediEditor extends InputWidget
         $containerId = $this->containerOptions['id'];
         $inputId = $this->hasModel() ? Html::getInputId($this->model, $this->attribute) : $this->options['id'];
         $inputName = $this->hasModel() ? Html::getInputName($this->model, $this->attribute) : $this->name;
-        $id = Inflector::slug($inputId, '');
+        $id = Inflector::slug($containerId, '');
 
         // Escape json for config if needed
         $schema = Json::htmlEncode($this->_schema);
