@@ -36,7 +36,7 @@ class JediEditor extends InputWidget
     /**
      * Options to be passed to the jedi.
      * List of valid options can be found here:
-     * https://github.com/germanbisurgi/jedi?tab=readme-ov-file#options
+     * https://github.com/germanbisurgi/jedi?tab=readme-ov-file#instance-options
      */
     public array $pluginOptions = [];
     /**
