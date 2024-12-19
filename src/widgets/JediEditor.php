@@ -87,6 +87,8 @@ class JediEditor extends InputWidget
             throw new InvalidConfigException("Property 'schema' must be specified.");
         }
 
+        $this->options['id'] = $this->id;
+
         // Always set a unique id for the container
         if (!isset($this->containerOptions['id'])) {
             $this->containerOptions['id'] = $this->options['id'] . '-container';
@@ -140,6 +142,15 @@ class JediEditor extends InputWidget
     protected function ensurePluginOptions(): void
     {
         unset($this->pluginOptions['container']);
+
+        if (isset($this->pluginOptions['hiddenInputAttributes']['name']) && $this->hasModel() && empty($this->name)) {
+            $this->name = $this->pluginOptions['hiddenInputAttributes']['name'];
+        }
+
+        if (isset($this->pluginOptions['hiddenInputAttributes']['id']) && $this->hasModel() && empty($this->options['id'])) {
+            $this->options['id'] = $this->pluginOptions['hiddenInputAttributes']['id'];
+        }
+
         unset($this->pluginOptions['hiddenInputAttributes']['name']);
         unset($this->pluginOptions['hiddenInputAttributes']['id']);
 
@@ -193,8 +204,18 @@ class JediEditor extends InputWidget
 
         // Setup variables for later use
         $containerId = $this->containerOptions['id'];
-        $inputId = $this->hasModel() ? Html::getInputId($this->model, $this->attribute) : $this->options['id'];
-        $inputName = $this->hasModel() ? Html::getInputName($this->model, $this->attribute) : $this->name;
+
+        if (!empty($this->options['id'])) {
+            $inputId = $this->options['id'];
+        } else {
+            $inputId = $this->hasModel() ? Html::getInputId($this->model, $this->attribute) : $this->options['id'];
+        }
+
+        if (!empty($this->name)) {
+            $inputName = $this->name;
+        } else {
+            $inputName = $this->hasModel() ? Html::getInputName($this->model, $this->attribute) : $this->name;
+        }
         $id = Inflector::slug($containerId, '');
 
         // Escape json for config if needed
