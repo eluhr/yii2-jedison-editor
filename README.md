@@ -68,7 +68,8 @@ echo JediEditor::widget([
         // You can also set the theme like this
         'theme' => new JsExpression('new Jedi.ThemeBootstrap3()'),
         'showErrors' => 'always', // "change" or "never" is also possible
-    ]
+    ],
+    'disabled' => false
 ]);
 ```
 
