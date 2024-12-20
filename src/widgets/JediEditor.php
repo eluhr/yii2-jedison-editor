@@ -57,6 +57,11 @@ class JediEditor extends InputWidget
     protected array $_validationErrors = [];
 
     /**
+     * Disable the editor and set it in a readonly mode
+    */
+    public bool $disabled = false;
+
+    /**
      * @inheritdoc
      * @throws \yii\base\InvalidConfigException if some config is not as expected
      */
@@ -226,6 +231,8 @@ class JediEditor extends InputWidget
 
         $errorMessages = Json::htmlEncode($this->getValidationErrors());
 
+        $disabled = Json::htmlEncode($this->disabled);
+
         // Init editor
         $this->view->registerJs(<<<JS
 const initEditor$id = async () => {
@@ -254,6 +261,9 @@ const initEditor$id = async () => {
     const editor = new Jedi.Create(editorOptions) 
     
     if (editor) {
+        if ($disabled) {
+          editor.disable()  
+        }
         const editorErrors = editor.getErrors()
         const customErrors = $errorMessages
         const errors = editorErrors.concat(customErrors)
