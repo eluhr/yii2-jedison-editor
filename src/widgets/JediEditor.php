@@ -1,5 +1,6 @@
 <?php
 
+
 namespace eluhr\jedi\widgets;
 
 use eluhr\jedi\assets\DeepMergeAsset;
@@ -40,6 +41,10 @@ class JediEditor extends InputWidget
      */
     public array $pluginOptions = [];
     /**
+     * Events to be passed to the jedi
+     */
+    public array $pluginEvents = [];
+    /**
      * A json that contains the schema to build the form. Values can be given as array, string or stdClass
      * Does not to be set if pluginOptions property has schema set.
      */
@@ -58,7 +63,7 @@ class JediEditor extends InputWidget
 
     /**
      * Disable the editor and set it in a readonly mode
-    */
+     */
     public bool $disabled = false;
 
     /**
@@ -233,6 +238,8 @@ class JediEditor extends InputWidget
 
         $disabled = Json::htmlEncode($this->disabled);
 
+        $pluginEvents = Json::htmlEncode($this->pluginEvents);
+
         // Init editor
         $this->view->registerJs(<<<JS
 const initEditor$id = async () => {
@@ -253,6 +260,7 @@ const initEditor$id = async () => {
     }
     
     const customOptions = $pluginOptions
+    const customEvents = $pluginEvents
     let editorOptions = deepMerge(defaultOptions, customOptions)
     if (refParser) {                            
         editorOptions.refParser = refParser
@@ -261,9 +269,15 @@ const initEditor$id = async () => {
     const editor = new Jedi.Create(editorOptions) 
     
     if (editor) {
+        
         if ($disabled) {
           editor.disable()  
         }
+        
+        Object.entries(customEvents).forEach(([event, value]) => {
+            editor.on(event, value)
+        })
+        
         const editorErrors = editor.getErrors()
         const customErrors = $errorMessages
         const errors = editorErrors.concat(customErrors)

@@ -38,7 +38,7 @@ use yii\web\JsExpression;
 // Schema can either be of type string, array or stdClass.
 $schema1 = '{}';
 $schema2 = [];
- 
+
 // Without a model
 echo JediEditor::widget([
     'id' => 'my-jedi',
@@ -49,10 +49,13 @@ echo JediEditor::widget([
     'pluginOptions' => [
         // No ref parser
         'refParser' => null
+    ],
+    'pluginEvents' => [
+        'change' => new JsExpression('() => console.log(window["my-jedi"].getValue())'),
     ]
 ]);
 
-// Example on how to listen to change event
+// Alternative example on how to listen to change event
 $this->registerJs(<<<JS
 window['my-jedi'].on('change', () => {
     console.log(window['my-jedi'].getValue())
