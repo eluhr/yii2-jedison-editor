@@ -45,15 +45,15 @@ class JediEditor extends InputWidget
      */
     public array $pluginEvents = [];
     /**
-     * Use model errors instead of Jedi errors
+     * Shows model errors
      */
     public bool $showModelErrors = false;
     /**
-     * When showing model errors Use Jedi translated Jedi errors when possible
+     * Use Jedi-translated error messages when showing model errors, if available.
      */
     public bool $mapTranslations = true;
     /**
-     * Filter error messages for this constraints. Helps with hiding unnecessary error messages
+     * Filter error messages by constraints to hide unnecessary messages.
      */
     public array $filterConstraints = [];
     /**
