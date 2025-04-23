@@ -140,4 +140,13 @@ JSON;
 ?>
 ```
 
+## Options
+
+- **`$containerOptions`** *(array)*: HTML attributes for the `<textarea>` container tag.
+- **`$pluginOptions`** *(array)*: Options to be passed to the Jedi validator. See: https://github.com/germanbisurgi/jedi?tab=readme-ov-file#instance-options
+- **`$pluginEvents`** *(array)*: Events to be passed to the Jedi validator.
+- **`$showModelErrors`** *(bool)*: Use model validation errors instead of Jedi-generated errors.
+- **`$mapTranslations`** *(bool)*: Use Jedi-translated error messages when showing model errors, if available.
+- **`$filterConstraints`** *(array)*: Filter error messages by constraints to hide unnecessary messages.
+
 For further information about the usage of the jedi editor please refer to the [docs](https://github.com/germanbisurgi/jedi)

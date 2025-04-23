@@ -45,6 +45,18 @@ class JediEditor extends InputWidget
      */
     public array $pluginEvents = [];
     /**
+     * Use model errors instead of Jedi errors
+     */
+    public bool $showModelErrors = false;
+    /**
+     * When showing model errors Use Jedi translated Jedi errors when possible
+     */
+    public bool $mapTranslations = true;
+    /**
+     * Filter error messages for this constraints. Helps with hiding unnecessary error messages
+     */
+    public array $filterConstraints = [];
+    /**
      * A json that contains the schema to build the form. Values can be given as array, string or stdClass
      * Does not to be set if pluginOptions property has schema set.
      */
@@ -238,54 +250,86 @@ class JediEditor extends InputWidget
 
         $disabled = Json::htmlEncode($this->disabled);
 
+        $showModelErrors = Json::htmlEncode($this->showModelErrors);
+
+        $mapTranslations = Json::htmlEncode($this->mapTranslations);
+
+        $filterConstraints = Json::htmlEncode($this->filterConstraints);
+
         $pluginEvents = Json::htmlEncode($this->pluginEvents);
 
         // Init editor
         $this->view->registerJs(<<<JS
 const initEditor$id = async () => {
-    const schema = $schema || {}
-    const refParser = $refParser || null
-    
-    if (refParser) {
-        await refParser.dereference(schema)
+  const schema = $schema || {}
+  const refParser = $refParser || null
+
+  if (refParser) {
+    await refParser.dereference(schema)
+  }
+
+  const defaultOptions = {
+    container: document.getElementById('$containerId'),
+    schema: schema,
+    hiddenInputAttributes: {
+      'name': '$inputName',
+      'id': '$inputId'
     }
-    
-    const defaultOptions = {
-        container: document.getElementById('$containerId'),
-        schema: schema,
-        hiddenInputAttributes: {
-            'name': '$inputName',
-            'id': '$inputId'
-        }
+  }
+
+  const customOptions = $pluginOptions
+  const customEvents = $pluginEvents
+  let editorOptions = deepMerge(defaultOptions, customOptions)
+
+  if (refParser) {
+    editorOptions.refParser = refParser
+  }
+
+  const editor = new Jedi.Create(editorOptions)
+  if (editor) {
+
+    if ($disabled) {
+      editor.disable()
     }
-    
-    const customOptions = $pluginOptions
-    const customEvents = $pluginEvents
-    let editorOptions = deepMerge(defaultOptions, customOptions)
-    if (refParser) {                            
-        editorOptions.refParser = refParser
+
+    Object.entries(customEvents).forEach(([event, value]) => {
+      editor.on(event, value)
+    })
+
+    const editorErrors = editor.getErrors()
+
+    let modelErrors = $errorMessages
+
+    // Use Jedi error translations messages if any for custom errors
+    if ($mapTranslations) {
+      modelErrors = modelErrors.map(custom => {
+        const matchingEditor = editorErrors.find(editor =>
+          editor.path === custom.path
+        );
+
+        return {
+          ...custom,
+          messages: matchingEditor ? matchingEditor.messages : custom.messages
+        };
+      });
     }
-    
-    const editor = new Jedi.Create(editorOptions) 
-    
-    if (editor) {
-        
-        if ($disabled) {
-          editor.disable()  
-        }
-        
-        Object.entries(customEvents).forEach(([event, value]) => {
-            editor.on(event, value)
-        })
-        
-        const editorErrors = editor.getErrors()
-        const customErrors = $errorMessages
-        const errors = editorErrors.concat(customErrors)
-        if (errors.length > 0) {
-            editor.showValidationErrors(errors) 
-        }
-        window['$inputId'] = editor
+
+    let errors = $showModelErrors && modelErrors.length > 0 ? modelErrors : editorErrors
+
+    // filter out errors by constraint name
+    if ($filterConstraints && $filterConstraints.length > 0) {
+      errors = errors.filter((error) => {
+        return !$filterConstraints.includes(error.constraint)
+      })
     }
+
+    // Always show initial model errors if there are any backend errors
+    if ($showModelErrors && modelErrors.length > 0) {
+      editor.showValidationErrors(errors)
+    }
+
+    window['$inputId'] = editor
+  }
 }
 
 initEditor$id()
