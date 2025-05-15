@@ -66,7 +66,13 @@ class JsonSchemaValidator extends Validator
      */
     public function validateAttribute($model, $attribute)
     {
-        $validationResult = $this->getValidationResult($model->$attribute);
+        try {
+            $validationResult = $this->getValidationResult($model->$attribute);
+        } catch (ErrorException $e) {
+            Yii::error([$e->getMessage(), $model->$attribute]);
+            $this->addError($model, $attribute, $e->getMessage());
+            return;
+        }
 
         if (!$validationResult->isValid()) {
             $validationErrors = $validationResult->error();
