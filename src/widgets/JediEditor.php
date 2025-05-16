@@ -37,7 +37,7 @@ class JediEditor extends InputWidget
     /**
      * Options to be passed to the jedi.
      * List of valid options can be found here:
-     * https://github.com/germanbisurgi/jedi?tab=readme-ov-file#instance-options
+     * https://github.com/germanbisurgi/jedison?tab=readme-ov-file#instance-options
      */
     public array $pluginOptions = [];
     /**
@@ -140,7 +140,7 @@ class JediEditor extends InputWidget
     public function setTheme(JsExpression|string $theme): void
     {
         if (is_string($theme)) {
-            $theme = self::themeMap()[$theme] ?? new JsExpression('new Jedi.Theme()');
+            $theme = self::themeMap()[$theme] ?? new JsExpression('new Jedison.Theme()');
         }
         $this->_theme = $theme;
     }
@@ -151,10 +151,10 @@ class JediEditor extends InputWidget
     protected static function themeMap(): array
     {
         return [
-            self::THEME_DEFAULT => new JsExpression('new Jedi.Theme()'),
-            self::THEME_THEME_BOOTSTRAP3 => new JsExpression('new Jedi.ThemeBootstrap3()'),
-            self::THEME_THEME_BOOTSTRAP4 => new JsExpression('new Jedi.ThemeBootstrap4()'),
-            self::THEME_THEME_BOOTSTRAP5 => new JsExpression('new Jedi.ThemeBootstrap5()'),
+            self::THEME_DEFAULT => new JsExpression('new Jedison.Theme()'),
+            self::THEME_THEME_BOOTSTRAP3 => new JsExpression('new Jedison.ThemeBootstrap3()'),
+            self::THEME_THEME_BOOTSTRAP4 => new JsExpression('new Jedison.ThemeBootstrap4()'),
+            self::THEME_THEME_BOOTSTRAP5 => new JsExpression('new JeJedisondi.ThemeBootstrap5()'),
         ];
     }
 
@@ -185,7 +185,7 @@ class JediEditor extends InputWidget
 
         // Set default ref parser if not set
         if (!isset($this->pluginOptions['refParser'])) {
-            $this->pluginOptions['refParser'] = new JsExpression('new Jedi.RefParser()');
+            $this->pluginOptions['refParser'] = new JsExpression('new Jedison.RefParser()');
         }
 
         // Set default value
@@ -285,7 +285,7 @@ const initEditor$id = async () => {
     editorOptions.refParser = refParser
   }
 
-  const editor = new Jedi.Create(editorOptions)
+  const editor = new Jedison.Create(editorOptions)
   if (editor) {
 
     if ($disabled) {

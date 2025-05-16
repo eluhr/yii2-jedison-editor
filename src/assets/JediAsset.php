@@ -7,10 +7,10 @@ use yii\web\View;
 
 class JediAsset extends AssetBundle
 {
-    public $sourcePath = __DIR__ . '/web/jedi';
+    public $sourcePath = '@npm/jedison/dist';
 
     public $js = [
-        'jedi.js',
+        'umd/jedison.umd.js',
     ];
 
     public $jsOptions = [
