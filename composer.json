@@ -1,8 +1,8 @@
 {
     "name": "eluhr/yii2-jedi-editor",
-    "description": "Yii2 asset bundle and input widget for germanbisurgi/jedi",
+    "description": "Yii2 asset bundle and input widget for germanbisurgi/jedison",
     "type": "yii2-extension",
-    "keywords": ["yii2","json schema","json","jedi"],
+    "keywords": ["yii2","json schema","json","jedison"],
     "license": "MIT",
     "authors": [
         {
@@ -13,7 +13,8 @@
     "require": {
         "yiisoft/yii2": "~2.0.0",
         "php": ">=8.0",
-        "opis/json-schema": "^2.3"
+        "opis/json-schema": "^2.3",
+        "npm-asset/jedison": "^0.2.1"
     },
     "autoload": {
         "psr-4": {

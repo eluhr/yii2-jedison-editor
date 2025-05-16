@@ -1,6 +1,6 @@
 Yii2 Jedi Editor
 ================
-Yii2 AssetBundle and Input Widget for [germanbisurgi/jedi](https://github.com/germanbisurgi/jedi)
+Yii2 AssetBundle and Input Widget for [germanbisurgi/jedison](https://github.com/germanbisurgi/jedison)
 
 Installation
 ------------
@@ -44,7 +44,7 @@ echo JediEditor::widget([
     'id' => 'my-jedi',
     'name' => 'editor',
     'schema' => $schema1,
-    // Update theme, see: https://github.com/germanbisurgi/jedi/tree/main?tab=readme-ov-file#theme
+    // Update theme, see: https://github.com/germanbisurgi/jedison/tree/main?tab=readme-ov-file#theme
     'theme' => JediEditor::THEME_THEME_BOOTSTRAP3,
     'pluginOptions' => [
         // No ref parser
@@ -69,7 +69,7 @@ echo JediEditor::widget([
     'schema' => $schema2,
     'pluginOptions' => [
         // You can also set the theme like this
-        'theme' => new JsExpression('new Jedi.ThemeBootstrap3()'),
+        'theme' => new JsExpression('new Jedison.ThemeBootstrap3()'),
         'showErrors' => 'always', // "change" or "never" is also possible
     ],
     'disabled' => false
@@ -143,10 +143,10 @@ JSON;
 ## Options
 
 - **`$containerOptions`** *(array)*: HTML attributes for the `<textarea>` container tag.
-- **`$pluginOptions`** *(array)*: Options to be passed to the Jedi validator. See: https://github.com/germanbisurgi/jedi?tab=readme-ov-file#instance-options
+- **`$pluginOptions`** *(array)*: Options to be passed to the Jedi validator. See: https://github.com/germanbisurgi/jedison?tab=readme-ov-file#instance-options
 - **`$pluginEvents`** *(array)*: Events to be passed to the Jedi validator.
 - **`$showModelErrors`** *(bool)*: Shows model errors.
 - **`$mapTranslations`** *(bool)*: Use Jedi-translated error messages when showing model errors, if available.
 - **`$filterConstraints`** *(array)*: Filter error messages by constraints to hide unnecessary messages.
 
-For further information about the usage of the jedi editor please refer to the [docs](https://github.com/germanbisurgi/jedi)
+For further information about the usage of the jedi editor please refer to the [docs](https://github.com/germanbisurgi/jedison)
