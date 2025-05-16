@@ -1,4 +1,4 @@
-Yii2 Jedi Editor
+Yii2 Jedison Editor
 ================
 Yii2 AssetBundle and Input Widget for [germanbisurgi/jedison](https://github.com/germanbisurgi/jedison)
 
@@ -10,13 +10,13 @@ The preferred way to install this extension is through [composer](https://getcom
 Either run
 
 ```
-composer require eluhr/yii2-jedi-editor
+composer require eluhr/yii2-jedison-editor
 ```
 
 or add
 
 ```
-"eluhr/yii2-jedi-editor": "*"
+"eluhr/yii2-jedison-editor": "*"
 ```
 
 to the `require` section of your `composer.json` file.
@@ -32,7 +32,7 @@ Usage
  * @var yii\web\View $this
 */
 
-use eluhr\jedi\widgets\JediEditor;
+use eluhr\jedison\widgets\JedisonEditor;
 use yii\web\JsExpression;
 
 // Schema can either be of type string, array or stdClass.
@@ -40,12 +40,12 @@ $schema1 = '{}';
 $schema2 = [];
 
 // Without a model
-echo JediEditor::widget([
+echo JedisonEditor::widget([
     'id' => 'my-jedi',
     'name' => 'editor',
     'schema' => $schema1,
     // Update theme, see: https://github.com/germanbisurgi/jedison/tree/main?tab=readme-ov-file#theme
-    'theme' => JediEditor::THEME_THEME_BOOTSTRAP3,
+    'theme' => JedisonEditor::THEME_THEME_BOOTSTRAP3,
     'pluginOptions' => [
         // No ref parser
         'refParser' => null
@@ -63,7 +63,7 @@ window['my-jedi'].on('change', () => {
 JS);
 
 // With a model
-echo JediEditor::widget([
+echo JedisonEditor::widget([
     'model' => $model,
     'attribute' => 'attribute_name',
     'schema' => $schema2,
@@ -82,7 +82,7 @@ Example model
 
 namespace app\models;
 
-use eluhr\jedi\validators\JsonSchemaValidator;
+use eluhr\jedison\validators\JsonSchemaValidator;
 use app\filters\MyCustomFilter;
 use yii\base\Model;
 
@@ -143,10 +143,10 @@ JSON;
 ## Options
 
 - **`$containerOptions`** *(array)*: HTML attributes for the `<textarea>` container tag.
-- **`$pluginOptions`** *(array)*: Options to be passed to the Jedi validator. See: https://github.com/germanbisurgi/jedison?tab=readme-ov-file#instance-options
-- **`$pluginEvents`** *(array)*: Events to be passed to the Jedi validator.
+- **`$pluginOptions`** *(array)*: Options to be passed to the Jedison validator. See: https://github.com/germanbisurgi/jedison?tab=readme-ov-file#instance-options
+- **`$pluginEvents`** *(array)*: Events to be passed to the Jedison validator.
 - **`$showModelErrors`** *(bool)*: Shows model errors.
-- **`$mapTranslations`** *(bool)*: Use Jedi-translated error messages when showing model errors, if available.
+- **`$mapTranslations`** *(bool)*: Use Jedison-translated error messages when showing model errors, if available.
 - **`$filterConstraints`** *(array)*: Filter error messages by constraints to hide unnecessary messages.
 
-For further information about the usage of the jedi editor please refer to the [docs](https://github.com/germanbisurgi/jedison)
+For further information about the usage of the jedison editor please refer to the [docs](https://github.com/germanbisurgi/jedison)

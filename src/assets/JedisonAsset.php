@@ -1,11 +1,11 @@
 <?php
 
-namespace eluhr\jedi\assets;
+namespace eluhr\jedison\assets;
 
 use yii\web\AssetBundle;
 use yii\web\View;
 
-class JediAsset extends AssetBundle
+class JedisonAsset extends AssetBundle
 {
     public $sourcePath = '@npm/jedison/dist';
 

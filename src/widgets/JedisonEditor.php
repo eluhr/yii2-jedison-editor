@@ -1,10 +1,10 @@
 <?php
 
 
-namespace eluhr\jedi\widgets;
+namespace eluhr\jedison\widgets;
 
-use eluhr\jedi\assets\DeepMergeAsset;
-use eluhr\jedi\assets\JediAsset;
+use eluhr\jedison\assets\DeepMergeAsset;
+use eluhr\jedison\assets\JedisonAsset;
 use stdClass;
 use Yii;
 use yii\base\InvalidArgumentException;
@@ -20,7 +20,7 @@ use yii\widgets\InputWidget;
  * @property-write \yii\web\JsExpression|string $theme
  * @property-write stdClass|string|array $schema
  */
-class JediEditor extends InputWidget
+class JedisonEditor extends InputWidget
 {
 
     // Available Themes
@@ -35,13 +35,13 @@ class JediEditor extends InputWidget
      */
     public array $containerOptions = [];
     /**
-     * Options to be passed to the jedi.
+     * Options to be passed to the jedison.
      * List of valid options can be found here:
      * https://github.com/germanbisurgi/jedison?tab=readme-ov-file#instance-options
      */
     public array $pluginOptions = [];
     /**
-     * Events to be passed to the jedi
+     * Events to be passed to the jedison
      */
     public array $pluginEvents = [];
     /**
@@ -49,7 +49,7 @@ class JediEditor extends InputWidget
      */
     public bool $showModelErrors = false;
     /**
-     * Use Jedi-translated error messages when showing model errors, if available.
+     * Use Jedison-translated error messages when showing model errors, if available.
      */
     public bool $mapTranslations = true;
     /**
@@ -222,7 +222,7 @@ class JediEditor extends InputWidget
     protected function registerAssets(): void
     {
         DeepMergeAsset::register($this->view);
-        JediAsset::register($this->view);
+        JedisonAsset::register($this->view);
 
         // Setup variables for later use
         $containerId = $this->containerOptions['id'];
@@ -300,7 +300,7 @@ const initEditor$id = async () => {
 
     let modelErrors = $errorMessages
 
-    // Use Jedi error translations messages if any for custom errors
+    // Use Jedison error translations messages if any for custom errors
     if ($mapTranslations) {
       modelErrors = modelErrors.map(custom => {
         const matchingEditor = editorErrors.find(editor =>

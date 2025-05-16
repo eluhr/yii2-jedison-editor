@@ -1,5 +1,5 @@
 {
-    "name": "eluhr/yii2-jedi-editor",
+    "name": "eluhr/yii2-jedison-editor",
     "description": "Yii2 asset bundle and input widget for germanbisurgi/jedison",
     "type": "yii2-extension",
     "keywords": ["yii2","json schema","json","jedison"],
@@ -18,7 +18,7 @@
     },
     "autoload": {
         "psr-4": {
-            "eluhr\\jedi\\": "src"
+            "eluhr\\jedison\\": "src"
         }
     }
 }

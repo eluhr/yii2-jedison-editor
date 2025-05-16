@@ -1,6 +1,6 @@
 <?php
 
-namespace eluhr\jedi\validators;
+namespace eluhr\jedison\validators;
 
 use Opis\JsonSchema\Errors\ErrorFormatter;
 use Opis\JsonSchema\Errors\ValidationError;

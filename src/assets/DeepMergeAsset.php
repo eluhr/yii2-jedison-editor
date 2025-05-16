@@ -1,6 +1,6 @@
 <?php
 
-namespace eluhr\jedi\assets;
+namespace eluhr\jedison\assets;
 
 use yii\web\AssetBundle;
 
